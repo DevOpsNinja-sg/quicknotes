@@ -1,32 +1,42 @@
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
-*$py.class
+*.pyo
+*.pyd
+*.pyc
 
-# Virtual environment
+aws/
+# Virtual environments
 venv/
-ENV/
-env/
-.venv/
+.env/
+.envrc
 
 # SQLite database
 instance/
 *.db
 
-# VS Code settings
+terraform/key/prod-key
+terraform/key/prod-key.pub
+
+# VS Code
 .vscode/
 
-# OS files
+# Ansible
+*.retry
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# AWS CLI/SDK
+*.pem
+*.key
+
+# System files
 .DS_Store
 Thumbs.db
 
-# Pytest cache
-.pytest_cache/
-
 # Logs
 *.log
-
-# Distribution / packaging
-build/
-dist/
-*.egg-

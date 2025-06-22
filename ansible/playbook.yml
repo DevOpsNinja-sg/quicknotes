@@ -1,0 +1,42 @@
+- name: Configure EC2 and deploy QuickNotes app
+  hosts: quicknotes
+  become: true
+
+  vars:
+    docker_users: ["ubuntu"]
+
+  tasks:
+    - name: Install Docker
+      ansible.builtin.apt:
+        name: [docker.io]
+        state: present
+        update_cache: true
+
+    - name: Install Docker Compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/v2.24.2/docker-compose-linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+
+    - name: Add user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+    - name: Install dependencies
+      apt:
+        name: [git, curl]
+        state: present
+        update_cache: true
+
+
+    - name: Clone QuickNotes repo
+      git:
+        repo: 'https://github.com/DevOpsNinja-sg/quicknotes.git'
+        dest: /home/ubuntu/app
+        version: main
+
+    - name: Run Docker Compose
+      shell: docker-compose up -d
+      args:
+        chdir: /home/ubuntu/app/

@@ -1,57 +1,127 @@
-# QuickNotes
+# 📝 QuickNotes Deployment Automation
 
-QuickNotes is a simple and efficient note-taking application designed to help you capture ideas, tasks, and reminders quickly.
+This project automates the provisioning, configuration, and deployment of the [QuickNotes] web application on an AWS EC2 instance using **Terraform**, **Ansible**, and **Docker**.
 
-## Features
+---
 
-- Create, edit, and delete notes
-- Organize notes by categories or tags
-- Responsive and user-friendly interface
+## 📦 Project Structure
 
-## Installation
+quicknotes/
+├── ansible/ # Ansible playbook and inventory for configuration
+│ ├── inventory.ini
+│ ├── playbook.yml
+│ └── roles/
+│ └── docker/
+│ └── tasks/
+│ └── main.yml
+├── app/ # Flask application source code
+│ ├── static/
+│ ├── templates/
+│ └── ...
+├── terraform/ # Terraform scripts to provision AWS infrastructure
+│ ├── main.tf
+│ ├── provider.tf
+│ ├── output.tf
+│ ├── terraform.tf
+│ └── key/
+│ ├── prod-key # Private key used for SSH
+│ └── prod-key.pub # Public key
+├── aws/ # AWS CLI installer or dependencies
+├── generate_inventory.py # Script to auto-generate Ansible inventory
+├── provision_and_deploy.sh # End-to-end provisioning and deployment script
+├── docker-compose.yml # Docker Compose config for the app
+├── Dockerfile # Dockerfile for the Flask app
+├── requirements.txt # Python requirements
+└── README.md # You are here
 
-You can run QuickNotes either locally with Python or using Docker.
 
-### Option 1: Local Installation
+## 🚀 Features
 
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/DevOpsNinja-sg/quicknotes
-    ```
-2. Navigate to the project directory:
-    ```bash
-    cd quicknotes
-    ```
-3. Install the required dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-4. Start the application:
-    ```bash
-    python app.py
-    ```
+- **Infrastructure as Code** using Terraform
+- **Configuration Management** using Ansible
+- **Containerization** with Docker and Docker Compose
+- **Flask Application** with persistent volume for note storage
+- **Remote Backend** Terraform state is stored in an S3 bucket with DynamoDB lock to enable collaboration and safe state management.
+---
 
-### Option 2: Using Docker
+## 🔧 Prerequisites
 
-1. Build the Docker image:
-    ```bash
-    docker build -t quicknotes .
-    ```
-2. Run the Docker container:
-    ```bash
-    docker run -p 8000:8000 quicknotes
-    ```
+- [Terraform](https://developer.hashicorp.com/terraform/downloads)
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) with configured credentials
+- [Python 3](https://www.python.org/)
+- An AWS account with permissions to create EC2, VPC, and related resources
 
-## Usage
+---
 
-- Add new notes using the "Add Note" button.
-- Edit or delete notes as needed.
-- Use the search bar to quickly find notes.
+## ⚙️ Setup Instructions
 
-## Contributing
+### 1. Configure AWS Credentials
 
-Contributions are welcome! Please open an issue or submit a pull request.
+Ensure your AWS credentials are configured, e.g.:
 
-## License
+aws configure
+Or export them as environment variables:
 
-This project is licensed under the MIT License.
+export AWS_ACCESS_KEY_ID=your-access-key
+export AWS_SECRET_ACCESS_KEY=your-secret-key
+
+## 2. How it Works🔧
+
+1. **Terraform** provisions:
+   - EC2 instance
+   - Security group with port 80 open
+   - Key pair and outputs IP to a file
+
+2. **Python script** (`generate_inventory.py`):
+   - Parses Terraform output
+   - Auto-generates `inventory.ini` for Ansible
+
+3. **Ansible** playbook:
+   - Installs Docker and Docker Compose
+   - Clones QuickNotes GitHub repo
+   - Runs the application via Docker Compose
+
+### 3. Provision Infrastructure + Deploy App
+
+sh provision_and_deploy.sh
+This script will:
+
+Run terraform apply to create AWS resources
+
+Extract EC2 IP and generate an Ansible inventory file
+
+Run Ansible playbook to install Docker, clone the app, and start it
+
+🌐 Access the Application
+Once deployment is complete, open the EC2 instance’s public IP in your browser.
+
+Example:
+http://<EC2_PUBLIC_IP>
+
+Port 80 is exposed and mapped to the app's internal 5000 port via Docker Compose.
+
+🛠 Troubleshooting
+
+SSH Permission Denied
+
+Make sure the private key file has correct permissions:
+chmod 400 terraform/key/key_name
+
+Docker Not Installed
+Check that the Ansible role is correctly included in playbook.yml and paths are correct.
+
+Run Ansible in verbose mode:
+
+ansible-playbook -i ansible/inventory.ini ansible/playbook.yml -vvv
+
+📌 Notes
+
+The SSH key is auto-generated and stored in terraform/key/
+
+The instance is Ubuntu-based (user: ubuntu)
+
+Docker Compose is downloaded from GitHub releases
+
+The playbook uses become: true to gain root privileges
+
