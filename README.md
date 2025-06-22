@@ -6,33 +6,35 @@ This project automates the provisioning, configuration, and deployment of the [Q
 
 ## 📦 Project Structure
 
+```
 quicknotes/
-├── ansible/ # Ansible playbook and inventory for configuration
-│ ├── inventory.ini
-│ ├── playbook.yml
-│ └── roles/
-│ └── docker/
-│ └── tasks/
-│ └── main.yml
-├── app/ # Flask application source code
-│ ├── static/
-│ ├── templates/
-│ └── ...
-├── terraform/ # Terraform scripts to provision AWS infrastructure
-│ ├── main.tf
-│ ├── provider.tf
-│ ├── output.tf
-│ ├── terraform.tf
-│ └── key/
-│ ├── prod-key # Private key used for SSH
-│ └── prod-key.pub # Public key
-├── aws/ # AWS CLI installer or dependencies
-├── generate_inventory.py # Script to auto-generate Ansible inventory
-├── provision_and_deploy.sh # End-to-end provisioning and deployment script
-├── docker-compose.yml # Docker Compose config for the app
-├── Dockerfile # Dockerfile for the Flask app
-├── requirements.txt # Python requirements
-└── README.md # You are here
+├── ansible/                      # Ansible playbook and inventory for configuration
+│   ├── inventory.ini
+│   ├── playbook.yml
+│   └── roles/
+│       └── docker/
+│           └── tasks/
+│               └── main.yml
+├── app/                          # Flask application source code
+│   ├── static/
+│   ├── templates/
+│   └── ...
+├── terraform/                    # Terraform scripts to provision AWS infrastructure
+│   ├── main.tf
+│   ├── provider.tf
+│   ├── output.tf
+│   ├── terraform.tf
+│   └── key/
+│       ├── prod-key              # Private key used for SSH
+│       └── prod-key.pub          # Public key
+├── aws/                          # AWS CLI installer or dependencies
+├── generate_inventory.py         # Script to auto-generate Ansible inventory
+├── provision_and_deploy.sh       # End-to-end provisioning and deployment script
+├── docker-compose.yml            # Docker Compose config for the app
+├── Dockerfile                    # Dockerfile for the Flask app
+├── requirements.txt              # Python requirements
+└── README.md                     # You are here
+```
 
 
 ## 🚀 Features
@@ -93,7 +95,7 @@ Extract EC2 IP and generate an Ansible inventory file
 
 Run Ansible playbook to install Docker, clone the app, and start it
 
-🌐 Access the Application
+### 🌐 Access the Application
 Once deployment is complete, open the EC2 instance’s public IP in your browser.
 
 Example:
@@ -101,7 +103,7 @@ http://<EC2_PUBLIC_IP>
 
 Port 80 is exposed and mapped to the app's internal 5000 port via Docker Compose.
 
-🛠 Troubleshooting
+### 🛠 Troubleshooting
 
 SSH Permission Denied
 
@@ -115,7 +117,7 @@ Run Ansible in verbose mode:
 
 ansible-playbook -i ansible/inventory.ini ansible/playbook.yml -vvv
 
-📌 Notes
+### 📌 Notes
 
 The SSH key is auto-generated and stored in terraform/key/
 
