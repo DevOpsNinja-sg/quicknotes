@@ -33,7 +33,7 @@ quicknotes/
 ├── docker-compose.yml            # Docker Compose config for the app
 ├── Dockerfile                    # Dockerfile for the Flask app
 ├── requirements.txt              # Python requirements
-└── README.md                     # You are here
+└── README.md                     
 ```
 
 
