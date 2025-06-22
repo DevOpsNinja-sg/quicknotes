@@ -2,6 +2,8 @@
 
 This project automates the provisioning, configuration, and deployment of the [QuickNotes] web application on an AWS EC2 instance using **Terraform**, **Ansible**, and **Docker**.
 
+<img width="958" alt="Screenshot 2025-06-23 005906" src="https://github.com/user-attachments/assets/f63e7115-d4db-458c-92c0-07ec269b2a0e" />
+
 ---
 
 ## 📦 Project Structure
