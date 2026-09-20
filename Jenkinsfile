@@ -28,7 +28,7 @@ pipeline {
             }
         }
 
-       stage('SonarQube Scan') {
+      stage('SonarQube Scan') {
     steps {
         withSonarQubeEnv('SonarQube') {
             script {
@@ -36,8 +36,9 @@ pipeline {
 
                 sh """
                     ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=quicknotes \
-                        -Dsonar.sources=.
+                        -Dsonar.projectKey=quiknotes \
+                        -Dsonar.sources=. \
+                        -Dsonar.exclusions=**/*.js,**/*.jsx,**/*.ts,**/*.tsx,**/node_modules/**,**/dist/**,**/build/**
                 """
             }
         }
