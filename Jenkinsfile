@@ -28,19 +28,21 @@ pipeline {
             }
         }
 
-        stage('SonarQube Scan') {
-            steps {
-                echo 'Running SonarQube scan...'
+       stage('SonarQube Scan') {
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            script {
+                def scannerHome = tool 'SonarScanner'
 
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        sonar-scanner \
-                            -Dsonar.projectKey=quicknotes \
-                            -Dsonar.sources=.
-                    '''
-                }
+                sh """
+                    ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=quiknotes \
+                        -Dsonar.sources=.
+                """
             }
         }
+    }
+}
 
         stage('Docker Build') {
             steps {
