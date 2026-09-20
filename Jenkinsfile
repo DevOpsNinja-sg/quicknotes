@@ -36,7 +36,7 @@ pipeline {
 
                 sh """
                     ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=quiknotes \
+                        -Dsonar.projectKey=quicknotes \
                         -Dsonar.sources=.
                 """
             }
@@ -57,17 +57,18 @@ pipeline {
         }
 
         stage('Trivy Scan') {
-            steps {
-                echo 'Scanning Docker image with Trivy...'
-
-                sh '''
-                    trivy image \
-                        --severity HIGH,CRITICAL \
-                        --exit-code 1 \
-                        ${IMAGE_NAME}:${GIT_SHA}
-                '''
-            }
-        }
+    steps {
+        sh '''
+            docker run --rm \
+                -v /var/run/docker.sock:/var/run/docker.sock \
+                aquasec/trivy:latest \
+                image \
+                --severity HIGH,CRITICAL \
+                --exit-code 1 \
+                ${IMAGE_NAME}:${GIT_SHA}
+        '''
+    }
+}
 
         stage('Docker Push') {
             steps {
