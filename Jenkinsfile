@@ -35,7 +35,7 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
                         sonar-scanner \
-                            -Dsonar.projectKey=quiknotes \
+                            -Dsonar.projectKey=quicknotes \
                             -Dsonar.sources=.
                     '''
                 }
