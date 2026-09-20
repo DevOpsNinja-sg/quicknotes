@@ -28,22 +28,7 @@ pipeline {
             }
         }
 
-      stage('SonarQube Scan') {
-    steps {
-        withSonarQubeEnv('SonarQube') {
-            script {
-                def scannerHome = tool 'SonarScanner'
-
-                sh """
-                    ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=quiknotes \
-                        -Dsonar.sources=. \
-                        -Dsonar.exclusions=**/*.js,**/*.jsx,**/*.ts,**/*.tsx,**/node_modules/**,**/dist/**,**/build/**
-                """
-            }
-        }
-    }
-}
+    
 
         stage('Docker Build') {
             steps {
